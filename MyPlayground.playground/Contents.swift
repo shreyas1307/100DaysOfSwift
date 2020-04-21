@@ -80,7 +80,7 @@ heightsAnnotations["Bala", default: 0]
 var teams = [String: String]()
 // or var teams = Dictionary<String, Int>()
 teams["Red"] = "Paul"
-
+					
 // Create empty Array
 var results = [Int]()
 // or var results = Array<Int>()
@@ -671,3 +671,149 @@ struct Me {
 
 
 // Static Properties and Methods
+
+struct Static {
+    var name: String
+    static var totalStatics = 0
+    
+    init(name: String) {
+        print("New Struct instantiated");
+        Static.totalStatics += 1
+        self.name = name
+    }
+}
+
+print(Static.totalStatics);
+
+
+// Private
+
+struct Private {
+    private var SSN: String
+    
+    init(id: String) {
+        self.SSN = id
+    }
+    
+    func identify() -> String {
+        return "My Social Security Number is \(SSN)"
+    }
+}
+
+
+// Classes - Creating own Class, class never comes with memberwise initializers
+
+class Dog {
+    var Name: String
+    var Breed: String
+    
+    init(name: String, breed: String) {
+        self.Name = name
+        self.Breed = breed
+    }
+    
+    func makeNoise() {
+        print("Woof!");
+    }
+}
+
+let poppy = Dog(name: "Nancy", breed: "Dachshund")
+
+
+
+// Inheritance
+
+class Poodle: Dog {
+    
+    // Giving it's own initializer
+    init(name: String) {
+        // For safety, call super.init() from child cases, just in case there is some work to be done by parent class has to do upon creatin
+        super.init(name: name, breed: "Poodle")
+    }
+}
+
+
+// Overriding Class methods
+
+class Dachshund: Dog {
+    override func makeNoise() {
+        print("Yip")
+    }
+}
+
+// Final Classes - Prevent other classes from inheriting from it, and can't override methods declared to change it's behaviour
+
+final class Cat {
+    var name: String
+    var breed: String
+    
+    init(name: String, breed: String) {
+        self.name = name
+        self.breed = breed
+    }
+    
+}
+
+
+// Copying Objects - struct copied, both original and copied is diff, but classes both are same thing. hence changing 1 changes other.
+
+class Singer {
+    var name = "Taylor Swift"
+}
+
+var singer = Singer()
+print(singer);
+
+var singerCopy = singer
+singerCopy.name = "Kanye West"
+print(singer.name); // Kanye West
+
+// They point to same spot in memory/heap. For Struct, the copied value has it's own value than the original and doesn't get affected.
+
+// Deinitializers -- When class gets destroyed, this runs.
+
+class Person {
+    var name = "John Doe"
+    
+    init() {
+        print(name + " is alive")
+    }
+    
+    func printGreeting() {
+        print("Hello \(name)!")
+    }
+    
+    // TO Deinitialize it
+    
+    deinit {
+        print("Class has been deinitialized!")
+    }
+}
+
+
+for _ in 1...3 {
+    let Person12 = Person()
+    Person12.printGreeting();
+}
+
+
+// Mutability - Way to deal with constants
+
+// Const struct with variable prop, can't be changed
+// Const class with variable prop, can be changed
+
+class Musician {
+    // If var is used, after initializing the value cab be chanegd, but if let is used, value cannot be changeed
+    var name = "Taylor Swift"
+    
+    init(name: String) {
+        self.name = name
+    }
+}
+
+let Johnathan = Musician(name: "Jonathan");
+Johnathan.name = "Jake Dawson"
+print(Johnathan.name)
+
+
+// End Classes
