@@ -817,3 +817,102 @@ print(Johnathan.name)
 
 
 // End Classes
+
+
+// Protocols
+// Protocol Oriented Programming => Functional
+// Protocols are a way of describing what properties and methods something must have. You then tell Swift which types use that protocol – a process known as adopting or conforming to a protocol.
+
+// Identifiable Protocal
+
+protocol Idenfitiable {
+    var id: String {get set}
+}
+
+struct User: Idenfitiable {
+    var id: String
+}
+
+func displayId(thing: Idenfitiable) {
+    print("My ID is \(thing.id)")
+}
+
+
+// Protocol Inheritance - unlike classes, can inherit from multiple protocols and can customize it too
+
+protocol Payable {
+    func calculateWages() -> Int
+}
+
+protocol NeedsTraining {
+    func study()
+}
+
+protocol HasVacation {
+    func takeVacation(days: Int);
+}
+
+protocol Employee: Payable, NeedsTraining, HasVacation {}
+
+// Extensions - Extensions allow you to add methods to existing types, to make them do things they weren’t originally designed to do.
+
+extension Int {
+    func squared() -> Int {
+        return self * self
+    }
+}
+
+let number3 = 8
+
+number3.squared();
+
+// Swift doesn’t let you add stored properties in extensions, so you must use computed properties instead.
+
+
+extension Int {
+    var isEven: Bool {
+        return self % 2 == 0
+    }
+}
+
+
+// Protocols Extension: Rather than writing an extension for a Type, we can also write an extension for types which conform to a an existing Protocol
+
+// Array and Sets conform to Protocol Collection
+
+let pythons = ["Eric", "Graham", "John", "Michael", "Terry", "Terry"]
+let beatles = Set(["John", "Paul", "George", "Ringo"])
+
+extension Collection {
+    func summarize() {
+        print("There are \(count) of us:")
+
+        for name in self {
+            print(name)
+        }
+    }
+}
+
+pythons.summarize()
+beatles.summarize()
+
+// Prootocol Oriented Programming
+// Protocol extensions can provide default implementations for our own protocol methods. This makes it easy for types to conform to a protocol, and allows a technique called “protocol-oriented programming” – crafting your code around protocols and protocol extensions.
+
+protocol Identifiable {
+    var id: String { get set }
+    func identify()
+}
+// We could make every conforming type write their own identify() method, but protocol extensions allow us to provide a default:
+extension Identifiable {
+    func identify() {
+        print("My ID is \(id).")
+    }
+}
+//Now when we create a type that conforms to Identifiable it gets identify() automatically:
+struct User5: Identifiable {
+    var id: String
+}
+
+let twostraws = User5(id: "twostraws")
+twostraws.identify()
