@@ -916,3 +916,8 @@ struct User5: Identifiable {
 
 let twostraws = User5(id: "twostraws")
 twostraws.identify()
+
+
+var nilVariable: Int? = nil;
+
+
