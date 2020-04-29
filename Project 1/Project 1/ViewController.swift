@@ -14,16 +14,32 @@ class ViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        title = "Storm Viewer"
+        navigationController?.navigationBar.prefersLargeTitles = true
         let fm = FileManager.default
         let path = Bundle.main.resourcePath!
-        let items = try! fm.contents(atPath: path)
-        
-        for item in items {
-            if item.hasPrefix("nssl") {
-                pictures.append(contentsOf: item)
+        do {
+            let items = try fm.contentsOfDirectory(atPath: path)
+            
+            for item in items {
+                if item == "Content" {
+                    let subDirectory = path + "/" + item
+                    do {
+                        let contentsOfSubDirectory = try fm.contentsOfDirectory(atPath: subDirectory)
+                        
+                        for images in contentsOfSubDirectory {
+                            if images.hasPrefix("nssl") {
+                                pictures.append(images)
+                            }
+                        }
+                    } catch {
+                        print("No items found in subdirectory")
+                    }
+                }
             }
+        } catch {
+            print("Sorry error has occured!")
         }
-        print(pictures)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -34,6 +50,14 @@ class ViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Picture", for: indexPath)
         cell.textLabel?.text = pictures[indexPath.row]
         return cell
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let vc = storyboard?.instantiateViewController(identifier: "Detail") as? DetailViewController {
+            vc.selectedImage = pictures[indexPath.row]
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
 }
 
